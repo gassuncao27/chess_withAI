@@ -14,7 +14,7 @@ class State(object):
 
     def value(self):
         # TODO: add neural net here
-        return 1  # communist will be happy. all board positions are equal
+        return 0  # communist will be happy. all board positions are equal
 
 if __name__ == "__main__":
     s = State()
