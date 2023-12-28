@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import os
 import chess.pgn
+from state import State
 
+# pgn files in the data folder
 for fn in os.listdir("data"):
     pgn = open(os.path.join("data", fn))
     while 1:
@@ -9,14 +11,11 @@ for fn in os.listdir("data"):
             game = chess.pgn.read_game(pgn)
         except Exception:
             break
-        # print(game)
-        result = game.headers["Result"]
+        value = {'1/2-1/2':0, '0-1':-1, '1-0':1}[game.headers["Result"]]
+        print(value)
         board = game.board()
-        print("Game result: ", result)
         for i, move in enumerate(game.mainline_moves()):
             board.push(move)
-            print(i)
-            print(board)
-        exit(0)
-    # break    
-
+            # TODO: extract the boards
+            print(value, State(board).serialize())
+    break    
