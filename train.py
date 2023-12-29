@@ -18,4 +18,5 @@ for fn in os.listdir("data"):
             board.push(move)
             # TODO: extract the boards
             print(value, State(board).serialize())
-    break    
+        exit(0)
+#     break    
