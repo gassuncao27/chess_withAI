@@ -35,9 +35,6 @@ def get_dataset(num_samples=None):
 import h5py
 
 if __name__ == "__main__":
-    X, Y = get_dataset(1e3)
-    np.savez("processed/dataset_1k.npz", X, Y)
-     # h5 = h5py.File("processed/trainme.h5", 'w')
-    # h5.create_dataset("X", X)
-    # h5.create_dataset("X", Y) # verify this possible error
-    # h5.close()
+    X, Y = get_dataset(200000)
+    # np.savez("processed/dataset_full.npz", X, Y)
+    np.savez("processed/dataset_1M.npz", X, Y)
