@@ -8,6 +8,7 @@ from state import State
 def get_dataset(num_samples=None):
     X, Y = [], []
     gn = 0
+    values = {'1/2-1/2': 0, '0-1': -1, '1-0': 1}
     # pgn files in the data folder
     for fn in os.listdir("data"):
         pgn = open(os.path.join("data", fn))
@@ -16,11 +17,14 @@ def get_dataset(num_samples=None):
                 game = chess.pgn.read_game(pgn)
             except Exception:
                 break
-            value = {'1/2-1/2': 0, '0-1': -1, '1-0': 1}[game.headers["Result"]]
+            res = game.headers["Result"]
+            if res not in values:
+                continue
+            value = values[res]
             board = game.board()
             for i, move in enumerate(game.mainline_moves()):
                 board.push(move)
-                ser = State(board).serialize()[:, :, 0]
+                ser = State(board).serialize()
                 X.append(ser)
                 Y.append(value)
             print("parsing game %d, got %d examples" % (gn, len(X)))
@@ -35,6 +39,6 @@ def get_dataset(num_samples=None):
 import h5py
 
 if __name__ == "__main__":
-    X, Y = get_dataset(200000)
+    X, Y = get_dataset(100000)
     # np.savez("processed/dataset_full.npz", X, Y)
-    np.savez("processed/dataset_1M.npz", X, Y)
+    np.savez("processed/dataset_100k.npz", X, Y)
