@@ -72,26 +72,28 @@ class Net(nn.Module):
 
 
 chess_dataset = ChessValueDataset()
-train_loader = torch.utils.data.DataLoader(chess_dataset, batch_size=16)
+train_loader = torch.utils.data.DataLoader(chess_dataset, batch_size=256, shuffle=True)
 model = Net()
 optimizer = optim.Adam(model.parameters())
-loss = nn.MSELoss()
+floss = nn.MSELoss()
 
+device = "cuda"
 device = "cpu"
 
 model.train()
 # def train(args, model, device, train_loader, optimizer, epoch):
 for batch_idx, (data, target) in enumerate(train_loader):
     target = target.unsqueeze(-1)
-    data, target = data.to(device), target.to(device)
     data = data.float()
-    target = target.float()
+    target = target.float()    
+    data, target = data.to(device), target.to(device)
 
-    print(data.shape, target.shape)
+    # print(data.shape, target.shape)
     optimizer.zero_grad()
     output = model(data)
-    print(output.shape)
+    # print(output.shape)
 
-    tloss = loss(output, target)
-    tloss.backward()
+    loss = floss(output, target)
+    loss.backward()
     optimizer.step()
+    print("%d: %f" % (batch_idx, loss.item()))
