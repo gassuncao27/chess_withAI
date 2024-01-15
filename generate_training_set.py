@@ -39,6 +39,6 @@ def get_dataset(num_samples=None):
 import h5py
 
 if __name__ == "__main__":
-    X, Y = get_dataset(100000)
+    X, Y = get_dataset(10000000)
     # np.savez("processed/dataset_full.npz", X, Y)
-    np.savez("processed/dataset_100k.npz", X, Y)
+    np.savez("processed/dataset_10M.npz", X, Y)
